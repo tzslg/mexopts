@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config
+    Name="Intel Parallel Studio XE 2018 with Microsoft Visual Studio 2015 (C)"
+    ShortName="INTELC18MSVS2015"
+    Manufacturer="Intel"
+    Version="18.0"
+    Language="C"
+    Priority="X"
+    Location="$CROOT" >
+    <Details
+        CompilerExecutable="$COMPILER"
+        CompilerDefines="$COMPDEFINES"
+        CompilerFlags="$COMPFLAGS"
+        OptimizationFlags="$OPTIMFLAGS"
+        DebugFlags="$DEBUGFLAGS"
+        IncludeFlags="$INCLUDE"
+        LinkerExecutable="$LINKER"
+        LinkerFlags="$LINKFLAGS"
+        LinkerLibraries="$LINKLIBS"
+        LinkerDebugFlags="$LINKDEBUGFLAGS"
+        LinkerOptimizationFlags="$LINKOPTIMFLAGS"
+        CommandLineShell="$CROOT\bin\iclvars.bat "
+        CommandLineShellArg="intel64"
+        CompilerDefineFormatter="/D%s"
+        LinkerLibrarySwitchFormatter="lib%s.lib;%s.lib"
+        LinkerPathFormatter="/LIBPATH:%s"
+        LibrarySearchPath="$$LIB;$$LIBPATH;$$PATH;$$INCLUDE;$MATLABROOT\extern\lib\$ARCH\microsoft"
+    />
+    <!-- Switch guide: http://msdn.microsoft.com/en-us/library/fwkeyyhe(v=vs.71).aspx -->
+    <vars
+        CMDLINE100="$COMPILER /c $COMPFLAGS $OPTIM $SRC /Fo$OBJ"
+        CMDLINE200="$LINKER $LINKFLAGS $LINKTYPE $LINKOPTIM $LINKEXPORTVER $OBJS $LINKLIBS /out:$EXE"
+        CMDLINE250="mt -outputresource:$EXE;2 -manifest $MANIFEST"
+        CMDLINE300="del $EXP $LIB $MANIFEST $ILK"
+
+        COMPILER="icl"
+        COMPFLAGS="/GR /W3 /EHs /nologo /MD $COMPDEFINES $INCLUDE"
+        COMPDEFINES="/D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0 $MATLABMEX"
+        MATLABMEX=" /DMATLAB_MEX_FILE"
+        OPTIMFLAGS="/O2 /DNDEBUG"
+        INCLUDE="-I&quot;$MATLABROOT\extern\include&quot; -I&quot;$MATLABROOT\simulink\include&quot;"
+        DEBUGFLAGS="/Z7"
+
+        LINKER="link"
+        LINKFLAGS="/nologo /manifest /INCREMENTAL:NO /nologo "
+        LINKTYPE="/DLL"
+        LINKEXPORT=" /EXPORT:mexFunction"
+		LINKEXPORTVER=" /EXPORT:mexFunction /EXPORT:mexfilerequiredapiversion"
+        LINKLIBS="/LIBPATH:&quot;$MATLABROOT\extern\lib\$ARCH\microsoft&quot; libmx.lib libmex.lib libmat.lib  kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib  ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"
+        LINKDEBUGFLAGS="/debug /PDB:&quot;$TEMPNAME$LDEXT.pdb&quot;"
+        LINKOPTIMFLAGS=""
+
+        OBJEXT=".obj"
+        LDEXT=".mexw64"
+        SETENV="set COMPILER=$COMPILER
+                set COMPFLAGS=/c $COMPFLAGS $COMPDEFINES $MATLABMEX
+                set OPTIMFLAGS=$OPTIMFLAGS
+                set DEBUGFLAGS=$DEBUGFLAGS
+                set LINKER=$LINKER
+                set LINKFLAGS=$LINKFLAGS /export:%ENTRYPOINT% $LINKTYPE $LINKLIBS $LINKEXPORT
+                set LINKDEBUGFLAGS=/debug /PDB:&quot;%OUTDIR%%MEX_NAME%$LDEXT.pdb&quot;
+                set NAME_OUTPUT=/out:&quot;%OUTDIR%%MEX_NAME%%MEX_EXT%&quot;"
+   />
+    <client>
+        <engine
+            CMDLINE250="mt -outputresource:$EXE;1 -manifest $MANIFEST"
+            LINKLIBS="$LINKLIBS libeng.lib"
+            LINKEXPORT=""
+			LINKEXPORTVER=""
+            LDEXT=".exe"
+            LINKTYPE=""
+            MATLABMEX=""
+        />
+    </client>
+    <locationFinder>
+        <CROOT>
+            <and>
+               <or>
+                    <envVarExists name="ICPP_COMPILER18" />
+              </or>
+              <fileExists name="$$/Bin/intel64/icl.exe" />
+              <dirExists name="$$/../.." />
+            </and>
+        </CROOT>
+        <VCROOT>
+            <and>
+                <or>
+                    <hklmExists path="SOFTWARE\Microsoft\VisualStudio\SxS\VS7" name="14.0" />
+                    <hkcuExists path="SOFTWARE\Microsoft\VisualStudio\SxS\VS7" name="14.0" />
+                    <hklmExists path="SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VS7" name="14.0" />
+                    <hkcuExists path="SOFTWARE\Wow6432Node\Microsoft\VisualStudio\SxS\VS7" name="14.0" />
+                </or>
+                <fileExists name="$$/VC/bin/amd64/cl.exe" />
+                <dirExists name="$$/../.." />
+            </and>
+        </VCROOT>
+        <SDKROOT>
+            <or>
+                <hklmExists path="SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1" name="InstallationFolder" />
+                <hkcuExists path="SOFTWARE\Microsoft\Microsoft SDKs\Windows\v8.1" name="InstallationFolder" />
+                <hklmExists path="SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v8.1" name="InstallationFolder" />
+                <hkcuExists path="SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v8.1" name="InstallationFolder" />
+            </or>
+        </SDKROOT>
+        <KITSROOT>
+            <or>
+                <hklmExists path="SOFTWARE\Microsoft\Windows Kits\Installed Roots" name="KitsRoot10" />
+                <hkcuExists path="SOFTWARE\Microsoft\Windows Kits\Installed Roots" name="KitsRoot10" />
+                <hklmExists path="SOFTWARE\Wow6432Node\Microsoft\Windows Kits\Installed Roots" name="KitsRoot10" />
+                <hkcuExists path="SOFTWARE\Wow6432Node\Microsoft\Windows Kits\Installed Roots" name="KitsRoot10" />
+            </or>
+        </KITSROOT>
+    </locationFinder>
+    <env
+        PATH="$CROOT\bin\intel64;$VCROOT\bin\amd64;$VCROOT\bin\VCPackages;$VCROOT\..\Common7\IDE;$VCROOT\..\Common7\Tools;$SDKROOT\bin\x64;$SDKROOT\bin\x86;"
+        INCLUDE="$CROOT\include;$CROOT\compiler\include;$VCROOT\INCLUDE;$VCROOT\ATLMFC\INCLUDE;$KITSROOT\include\10.0.10150.0\ucrt;$SDKROOT\include\shared;$SDKROOT\include\um;$SDKROOT\include\winrt;$MATLABROOT\extern\include;"
+        LIB="$CROOT\lib\intel64;$CROOT\compiler\lib\intel64;$CROOT\compiler\lib\intel64_win;$VCROOT\Lib\amd64;$VCROOT\ATLMFC\Lib\amd64;$KITSROOT\Lib\10.0.10150.0\ucrt\x64;$SDKROOT\Lib\X64;$SDKROOT\lib\winv6.3\um\x64;$MATLABROOT\lib\$ARCH;"
+        LIBPATH="$VCROOT\Lib\amd64;$CROOT\compiler\Lib\Intel64;$CROOT\compiler\lib\intel64_win;$SDKROOT\LIB\x64;$VCROOT\\LIB\amd64;$VCROOT\ATLMFC\LIB\amd64;$MATLABROOT\extern\lib\win64;"
+    />
+</config>

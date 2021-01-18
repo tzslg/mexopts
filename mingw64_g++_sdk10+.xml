@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config
+    Name="MinGW64 Compiler with Windows 10 SDK or later (C++)"
+    ShortName = "MinGW64SDK10+"
+    Manufacturer="GNU"
+    Version="6.3.0"
+    Language="C++"
+    Priority="M"
+    Location="$MINGWROOT">
+    <Details
+        CompilerExecutable="$CXX"
+        CompilerDefines="$DEFINES"
+        CompilerFlags="$CXXFLAGS"
+        OptimizationFlags="$CXXOPTIMFLAGS"
+        DebugFlags="$CXXDEBUGFLAGS"
+        IncludeFlags="$INCLUDE"
+        LinkerExecutable="$LDXX"
+        LinkerFlags="$LDFLAGS $LDTYPE"
+        LinkerLibraries="$LINKLIBS"
+        LinkerOptimizationFlags="$LDOPTIMFLAGS"
+        LinkerDebugFlags="$LDDEBUGFLAGS"
+        CommandLineShell="set MINGW_ROOT_PATH=$MINGWROOT"
+        CommandLineShellArg=""
+        CompilerDefineFormatter="-D%s"
+        LinkerLibrarySwitchFormatter="-l%s;-llib%s"
+        LinkerPathFormatter="-L%s"
+        LibrarySearchPath="$$LIB;$$LIBPATH;$$PATH;$$INCLUDE;$MATLABROOT\extern\lib\$ARCH\mingw"
+    />
+    <vars
+        CMDLINE1="$CXX -c $DEFINES $INCLUDE $CXXFLAGS $OPTIM $SRC -o $OBJ"
+        CMDLINE2="$LDXX $LDFLAGS $LDTYPE $LINKOPTIM $LINKEXPORTVER $OBJS $CXXLIBS $LINKLIBS -o $EXE"
+
+        CXX="$MINGWROOT\bin\g++"
+        COMPILER="$CXX"
+        DEFINES="-m64 $MATLABMEX"
+        MATLABMEX="-DMATLAB_MEX_FILE "
+        CFLAGS="-fexceptions -fno-omit-frame-pointer"
+        CXXFLAGS="$CFLAGS -std=c++11"
+        INCLUDE="-I&quot;$MATLABROOT/extern/include&quot; -I&quot;$MATLABROOT/simulink/include&quot;"
+        CXXOPTIMFLAGS="-O2 -fwrapv -DNDEBUG"
+        CXXDEBUGFLAGS="-g"
+
+        LDXX="$CXX"
+        LINKER="$LDXX"
+        LDFLAGS="-m64 -Wl,--no-undefined"
+        LDTYPE="-shared -static"
+        LINKEXPORT="-Wl,&quot;$MATLABROOT/extern/lib/win64/mingw64/mexFunction.def&quot;"
+        LINKEXPORTVER="-Wl,&quot;$MATLABROOT/extern/lib/win64/mingw64/exportsmexfileversion.def&quot;"
+        LIBLOC="$MATLABROOT\extern\lib\win64\mingw64"
+        LINKLIBS="-L&quot;$MATLABROOT\extern\lib\$ARCH\mingw64&quot; -llibmx -llibmex -llibmat -lm -llibmwlapack -llibmwblas -llibMatlabDataArray"
+        LDOPTIMFLAGS="-s"
+        LDDEBUGFLAGS="-g"
+
+        OBJEXT=".obj"
+        LDEXT=".mexw64"
+        SETENV="set COMPILER=$MINGWROOT\bin\gcc
+                set CXXCOMPILER=$CXX
+                set COMPFLAGS=-c $CFLAGS $DEFINES $MATLABMEX
+                set CXXCOMPFLAGS=-c $CXXFLAGS $DEFINES $MATLABMEX
+                set OPTIMFLAGS=$CXXOPTIMFLAGS
+                set DEBUGFLAGS=$CXXDEBUGFLAGS
+                set LINKER=$MINGWROOT\bin\gcc
+                set CXXLINKER=$LDXX
+
+                set LINKFLAGS=$LDFLAGS $LDTYPE $LINKLIBS $LINKEXPORT
+                set LINKDEBUGFLAGS=$LDDEBUGFLAGS
+                set NAME_OUTPUT= -o &quot;%OUTDIR%%MEX_NAME%%MEX_EXT%&quot;"
+    />
+    <client>
+        <engine
+          LINKLIBS="$LINKLIBS -llibeng -llibMatlabDataArray -llibMatlabEngine"
+          LINKEXPORT=""
+          LINKEXPORTVER=""
+          LDEXT=".exe"
+          LINKTYPE=""
+          MATLABMEX=""
+          LDTYPE="-static"
+        />
+
+        <mbuild
+          CXXFLAGS="$CXXFLAGS -Wno-endif-labels"
+          DEFFILE=""
+          LINKLIBS="-L&quot;$MATLABROOT\extern\lib\$ARCH\mingw64&quot; -lmclmcrrt -Bstatic &quot;$MATLABROOT\extern\bin\$ARCH\libMatlabDataArray.dll.a&quot; -llibMatlabCppSharedLib -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lodbc32 -lodbccp32"
+          LINKEXPORT=""
+          LINKEXPORTVER=""
+          LDEXT=".exe"
+          LDFLAGS="-m64 -Wl,--no-undefined,--out-implib,$LIB,&quot;$DEFFILE&quot;"
+          LINKTYPE=""
+          MATLABMEX=""
+          LDTYPE="-static"
+          INCLUDE="$INCLUDE -I&quot;$MATLABROOT\extern\include\$ARCH&quot;"
+        />
+
+        <mbuild_com
+          CMDLINE1=""
+          CMDLINE2=""
+          CMDLINE000="copy &quot;$MATLABROOT\extern\include\$ARCH\mwcomutil.tlb&quot; &quot;$OUTDIR&quot;"
+          CMDLINE100="midl /nologo /$ARCH $INCLUDE /cpp_cmd g++ /cpp_opt &quot;-E -w -x c-header -D_stdcall=_stdcall -D__stdcall=__stdcall&quot; /out &quot;$OUTDIR&quot; mwcomtypes.idl"
+          CMDLINE125="midl /nologo /$ARCH $INCLUDE /cpp_cmd g++ /cpp_opt &quot;-E -w -x c-header -D_stdcall=_stdcall -D__stdcall=__stdcall&quot; /out &quot;$OUTDIR&quot; &quot;$COMIDL&quot;"
+          CMDLINE150="$CXX $COMPFLAGS $COMPDEFINES $INCLUDE $SRC -o $OBJ"
+          CMDLINE175="windres &quot;$RCFILE&quot; &quot;$RESFILE_MINGW&quot;"
+          CMDLINE200="$CXX &quot;$DEFFILE&quot; -shared -static -o $EXE $OBJS &quot;$RESFILE_MINGW&quot; $LINKLIBS"
+          CMDLINE275="&quot;$MATLABROOT\runtime\$ARCH\mwregsvr.exe&quot; $EXE"
+          CMDLINE300="del $MANIFEST &quot;$OUTDIR\mwcomutil.tlb&quot; &quot;$RESFILE_MINGW&quot;"
+
+          OUTDIR="."
+          INCLUDE="$INCLUDE -I&quot;$OUTDIR&quot; -I&quot;$MATLABROOT\extern\include\$ARCH&quot;"
+          COMPFLAGS="-c -std=c++11 -w"
+          COMPDEFINES="-DNDEBUG -DMSVC -DIBMPC -D_CRT_SECURE_NO_DEPRECATE -D_SECURE_SCL=0"
+
+          LINKLIBS="-L&quot;$MATLABROOT\extern\lib\$ARCH\mingw64&quot; $MCLMAINLIB_MINGW -lmclmcrrt -lOleAut32 -lAdvAPI32 -lOle32 -lUuid"
+          LDEXT=".dll"
+          USERONLY=""
+          LINKTYPE=""
+          MATLABMEX=""
+        />
+
+    </client>
+    <locationFinder>
+        <MINGWROOT>
+            <and>
+                <envVarExists name="MW_MINGW64_LOC" />
+                <fileExists name="$$\bin\g++.exe" />
+                <dirExists name="$$\..\" />
+            </and>
+        </MINGWROOT>
+        <SDKROOT>
+            <or>
+                <hklmExists path="SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v10.0" name="InstallationFolder" />
+                <hkcuExists path="SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v10.0" name="InstallationFolder" />
+                <hklmExists path="SOFTWARE\Microsoft\Microsoft SDKs\Windows\v10.0" name="InstallationFolder" />
+                <hkcuExists path="SOFTWARE\Microsoft\Microsoft SDKs\Windows\v10.0" name="InstallationFolder" />
+            </or>
+        </SDKROOT>
+        <SDKVERSION>
+            <and>
+                <dirExists name="$MATLABROOT"/>
+                <cmdReturns name="&quot;$$\bin\mbuild.bat&quot; -getWin10SDKVersion"/>
+            </and>
+        </SDKVERSION>
+    </locationFinder>
+    <env
+        PATH = "$MINGWROOT\bin;$MATLABROOT\extern\include\$ARCH;$MATLABROOT\extern\include;$MATLABROOT\simulink\include;$MATLABROOT\lib\$ARCH;$SDKROOT\bin\$SDKVERSION\x64;$SDKROOT\bin\x64;"
+        INCLUDE = "$MINGWROOT\include;$SDKROOT\Include\$SDKVERSION\shared;$SDKROOT\Include\$SDKVERSION\ucrt;$SDKROOT\Include\$SDKVERSION\um;$SDKROOT\Include\$SDKVERSION\winrt"
+        LIB = "$MINGWROOT\lib;$SDKROOT\Lib\$SDKVERSION\ucrt\x64;$SDKROOT\Lib\$SDKVERSION\um\x64"
+        MW_TARGET_ARCH = "win64"
+        LIBPATH="$MATLABROOT\extern\lib\win64"
+    />
+</config>
