@@ -5,7 +5,7 @@
     Manufacturer="Microsoft"
     Version="15.0"
     Language="C++"
-    Priority="A"
+    Priority="B"
     Location="$VCROOT\" >
     <Details
         CompilerExecutable="$COMPILER"

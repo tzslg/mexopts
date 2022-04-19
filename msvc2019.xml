@@ -5,7 +5,7 @@
     Manufacturer="Microsoft"
     Version="16.0"
     Language="C"
-    Priority="X"
+    Priority="A"
     Location="$VCROOT\" >
     <Details
         CompilerExecutable="$COMPILER"
@@ -34,7 +34,7 @@
         CMDLINE300="del $EXP $LIB $MANIFEST $ILK"
 
         COMPILER="cl"
-        COMPFLAGS="/Zp8 /GR /W3 /EHs /nologo /MD"
+        COMPFLAGS="/Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD"
         COMPDEFINES="/D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0  $MATLABMEX"
         MATLABMEX=" /DMATLAB_MEX_FILE"
         OPTIMFLAGS="/O2 /Oy- /DNDEBUG"
@@ -79,7 +79,7 @@
             LINKFLAGS="/nologo /manifest"
             LINKLIBS="/MACHINE:AMD64 /LIBPATH:&quot;$MATLABROOT\extern\lib\$ARCH\microsoft&quot; mclmcrrt.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"
             INCLUDE="-I&quot;$MATLABROOT\extern\include&quot; -I&quot;$MATLABROOT\extern\include\$ARCH&quot;"
-            COMPFLAGS="-MD -Zp8 -GR -W3 -EHsc- -Zc:wchar_t- -nologo"
+            COMPFLAGS="-MD -Zc:__cplusplus -Zp8 -GR -W3 -EHsc- -Zc:wchar_t- -nologo"
             COMPDEFINES="/DMSVC /DIBMPC /D_CRT_SECURE_NO_DEPRECATE"
             OPTIMFLAGS="-O2 -DNDEBUG"
             LINKEXPORT=""
