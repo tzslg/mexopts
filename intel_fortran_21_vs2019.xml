@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <config
-    Name="Microsoft Visual C++ 2019"
-    ShortName="MSVCPP160"
-    Manufacturer="Microsoft"
-    Version="16.0"
-    Language="C++"
-    Priority="A"
-    Location="$VCROOT\" >
+    Name="Intel oneAPI 2021 for Fortran with Microsoft Visual Studio 2019"
+    ShortName="INTELF21MSVS2019"
+    Manufacturer="Intel"
+    Version="21.0"
+    Language="FORTRAN"
+    Priority="X"
+    Location="$FORTRANROOT" >
     <Details
         CompilerExecutable="$COMPILER"
         CompilerDefines="$COMPDEFINES"
@@ -15,12 +15,12 @@
         DebugFlags="$DEBUGFLAGS"
         IncludeFlags="$INCLUDE"
         LinkerExecutable="$LINKER"
-        LinkerFlags="$LINKFLAGS $LINKTYPE"
+        LinkerFlags="$LINKFLAGS"
         LinkerLibraries="$LINKLIBS"
         LinkerDebugFlags="$LINKDEBUGFLAGS"
         LinkerOptimizationFlags="$LINKOPTIMFLAGS"
-        CommandLineShell="$VCVARSALLDIR\VCVARSALL.BAT "
-        CommandLineShellArg="amd64"
+        CommandLineShell="$FORTRANROOT\bin\ifortvars.bat "
+        CommandLineShellArg="intel64"
         CompilerDefineFormatter="/D%s"
         LinkerLibrarySwitchFormatter="lib%s.lib;%s.lib"
         LinkerPathFormatter="/LIBPATH:%s"
@@ -28,25 +28,25 @@
     />
     <!-- Switch guide: http://msdn.microsoft.com/en-us/library/fwkeyyhe(v=vs.71).aspx -->
     <vars
-        CMDLINE100="$COMPILER /c $COMPFLAGS $OPTIM $COMPDEFINES $INCLUDE $SRC /Fo$OBJ"
+        CMDLINE100="$COMPILER /c $COMPFLAGS $OPTIM $SRC /Fo$OBJ"
         CMDLINE200="$LINKER $LINKFLAGS $LINKTYPE $LINKOPTIM $LINKEXPORTVER $OBJS $LINKLIBS /out:$EXE"
         CMDLINE250="mt -outputresource:$EXE;2 -manifest $MANIFEST"
         CMDLINE300="del $EXP $LIB $MANIFEST $ILK"
 
-        COMPILER="cl"
-        COMPFLAGS="/Zc:__cplusplus /Zp8 /GR /W3 /EHs /nologo /MD"
-        COMPDEFINES="/D_CRT_SECURE_NO_DEPRECATE /D_SCL_SECURE_NO_DEPRECATE /D_SECURE_SCL=0  $MATLABMEX"
+        COMPILER="ifort"
+        COMPFLAGS="/nologo /fpp /Qprec /fixed /MD /fp:source /assume:bscc $INCLUDE  $COMPDEFINES"
+        COMPDEFINES="/DMATLAB_MEX_FILE"
         MATLABMEX=" /DMATLAB_MEX_FILE"
-        OPTIMFLAGS="/O2 /Oy- /DNDEBUG"
-        INCLUDE="-I&quot;$MATLABROOT\extern\include&quot; -I&quot;$MATLABROOT\simulink\include&quot;"
+        OPTIMFLAGS="/O2 /DNDEBUG"
+        INCLUDE="-I&quot;$MATLABROOT\extern\include&quot;"
         DEBUGFLAGS="/Z7"
 
         LINKER="link"
-        LINKFLAGS="/nologo /manifest "
+        LINKFLAGS=" /nologo /manifest /INCREMENTAL:NO"
         LINKTYPE="/DLL"
-        LINKEXPORT="/EXPORT:mexFunction"
-        LINKEXPORTVER="/EXPORT:mexFunction /EXPORT:mexfilerequiredapiversion"
-        LINKLIBS="/LIBPATH:&quot;$MATLABROOT\extern\lib\$ARCH\microsoft&quot; libmx.lib libmex.lib libmat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib libMatlabDataArray.lib libMatlabEngine.lib"
+        LINKEXPORT="/EXPORT:MEXFUNCTION"
+        LINKEXPORTVER="/EXPORT:MEXFUNCTION /EXPORT:MEXFILEREQUIREDAPIVERSION"
+        LINKLIBS="/LIBPATH:&quot;$MATLABROOT\extern\lib\$ARCH\microsoft&quot; libmx.lib libmex.lib libmat.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib"
         LINKDEBUGFLAGS="/debug /PDB:&quot;$TEMPNAME$LDEXT.pdb&quot;"
         LINKOPTIMFLAGS=""
 
@@ -63,60 +63,43 @@
     />
     <client>
         <engine
-            LINKLIBS="$LINKLIBS libeng.lib libMatlabDataArray.lib libMatlabEngine.lib"
-            LINKEXPORT=""
-            LINKEXPORTVER=""
+            CMDLINE250="mt -outputresource:$EXE;1 -manifest $MANIFEST"
+            LINKLIBS="$LINKLIBS libeng.lib"
+            LINKEXPORT="/subsystem:console"
+			LINKEXPORTVER="/subsystem:console"
             LDEXT=".exe"
             LINKTYPE=""
             MATLABMEX=""
         />
-        <mbuild
-            CMDLINE100="$COMPILER /c $COMPFLAGS $OPTIM $COMPDEFINES $INCLUDE $SRC /Fo$OBJ /UMX_COMPAT_SC"
-            CMDLINE200="$LINKER $LINKFLAGS $LINKTYPE $LINKOPTIM $LINKEXPORT $OBJS $LINKLIBS /out:$EXE"
-            CMDLINE250="$MTCMDLINE"
-            CMDLINE300="del $MANIFEST &quot;$TEMPNAME.map&quot;"
-            LINKFLAGS="/nologo /manifest /DELAYLOAD:libMatlabDataArray.dll"
-            LINKLIBS="/MACHINE:AMD64 /LIBPATH:&quot;$MATLABROOT\extern\lib\$ARCH\microsoft&quot; libMatlabDataArray.lib libMatlabCppSharedLib.lib mclmcrrt.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib delayimp.lib"
-            INCLUDE="-I&quot;$MATLABROOT\extern\include&quot; -I&quot;$MATLABROOT\extern\include\$ARCH&quot;"
-            COMPFLAGS="-MD -Zc:__cplusplus -Zp8 -GR -W3 -EHsc- -nologo"
-            COMPDEFINES="/DMSVC /DIBMPC /D_CRT_SECURE_NO_DEPRECATE"
-            OPTIMFLAGS="-O2 -DNDEBUG"
-            LINKEXPORT=""
-            LINKEXPORTVER=""
-            LDEXT=".exe"
-            MATLABMEX=""
-            MTCMDLINE="mt -outputresource:$EXE;1 -manifest $MANIFEST"
-            LINKTYPE=""
-            LINKDEBUGFLAGS="/debug /PDB:&quot;$TEMPNAME.pdb&quot;"
-        />
-        <mbuild_com
-            CMDLINE000="copy &quot;$MATLABROOT\extern\include\$ARCH\mwcomutil.tlb&quot; &quot;$OUTDIR&quot;"
-            CMDLINE001="midl /nologo /$ARCH $COMPINCLUDE /D NDEBUG /out &quot;$OUTDIR&quot; mwcomtypes.idl"
-            CMDLINE002="midl /nologo /$ARCH $COMPINCLUDE /D NDEBUG /out &quot;$OUTDIR&quot; &quot;$COMIDL&quot;"
-            CMDLINE100="$COMPILER $COMPFLAGS $OPTIM $COMPDEFINES $INCLUDE $COMPINCLUDE $SRC /Fo$OBJ"
-            CMDLINE150="rc /fo &quot;$RESFILE&quot; &quot;$RCFILE&quot;"
-            CMDLINE250="mt -outputresource:$EXE;2 -manifest $MANIFEST"
-            CMDLINE275="&quot;$MATLABROOT\runtime\$ARCH\mwregsvr.exe&quot; $EXE"
-            CMDLINE300="del $MANIFEST &quot;$OUTDIR\mwcomutil.tlb&quot; &quot;$RESFILE&quot;"
-
-            OUTDIR="."
-            INCLUDE="$INCLUDE -I&quot;$OUTDIR&quot; -I&quot;$MATLABROOT\extern\include\$ARCH&quot;"
-            COMPFLAGS="/c /GR /W3 /EHsc- /nologo /MT"
-            COMPDEFINES="/DMSVC /DIBMPC /D_CRT_SECURE_NO_DEPRECATE /D_SECURE_SCL=0"
-            COMPINCLUDE="-I&quot;$MATLABROOT\extern\include&quot; -I&quot;$OUTDIR&quot;"
-
-            LINKEXPORT="/DLL /def:&quot;$DEFFILE&quot;"
-            LINKEXPORTVER="/DLL /def:&quot;$DEFFILE&quot;"
-            LINKLIBS="/MACHINE:AMD64 $LINKLIBS mclmcrrt.lib $MCLMAINLIB_MS &quot;$RESFILE&quot;"
-            LDEXT=".dll"
-            USERONLY=""
-            LINKTYPE=""
-            MATLABMEX=""
-          />
     </client>
     <locationFinder>
+	    <FORTRANROOT>
+            <or>
+				<and>
+					<or>
+						<envVarExists name="IFORT_COMPILER21" />
+					</or>
+					<fileExists name="$$/Bin/intel64/ifort.exe" />
+					<dirExists name="$$/../.." />
+				</and>
+				<and>
+					<or>
+						<envVarExists name="ONEAPI_ROOT" />
+					</or>
+					<fileExists name="$$/compiler/latest/windows/Bin/intel64/ifort.exe" />
+					<dirExists name="$$/../.." />
+				</and>
+				<and>
+					<or>
+						<envVarExists name="ONEAPI_ROOT" />
+					</or>
+					<fileExists name="$$/compiler/2021.1.1/windows/Bin/intel64/ifort.exe" />
+					<dirExists name="$$/../.." />
+				</and>
+			</or>
+        </FORTRANROOT>
         <VCROOT>
-			<or>
+            <or>
 				<and>
 					<envVarExists name="ProgramFiles(x86)" />
 					<fileExists name="$$\Microsoft Visual Studio\Installer\vswhere.exe" />
@@ -132,10 +115,10 @@
 				<and>
 					<envVarExists name="ProgramFiles(x86)" />
 					<fileExists name="$$\Microsoft Visual Studio\Installer\vswhere.exe" />
-					<cmdReturns name="&quot;$$\\vswhere.exe&quot; -version &quot;[16.0,17.0)&quot; -products Microsoft.VisualStudio.Product.Community -property installationPath -format value" />
 					<cmdReturns name="set &quot;vcroot=$$&quot;&amp;for /f &quot;delims= &quot; %a in ('type &quot;$$\VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt&quot;') do @if exist &quot;$$\VC\Tools\MSVC\%a\bin\HostX64\x64\cl.exe&quot; call echo %vcroot%" />
+					<cmdReturns name="&quot;$$\\vswhere.exe&quot; -version &quot;[16.0,17.0)&quot; -products Microsoft.VisualStudio.Product.Community -property installationPath -format value" />
 				</and>
-			</or>	
+			</or>
         </VCROOT>
         <SDKROOT>
             <or>
@@ -162,10 +145,10 @@
 					<fileExists name="$$\Microsoft Visual Studio\Installer\vswhere.exe" />
 					<cmdReturns name="&quot;$$\\vswhere.exe&quot; -version &quot;[16.0,17.0)&quot; -products Microsoft.VisualStudio.Product.Community -property installationPath -format value" />
 				</and>
-			</or>	
+			</or>
         </VSINSTALLDIR>
         <VCINSTALLDIR>
-			<or>
+            <or>
 				<and>
 					<envVarExists name="ProgramFiles(x86)" />
 					<fileExists name="$$\Microsoft Visual Studio\Installer\vswhere.exe" />
@@ -184,7 +167,7 @@
 					<cmdReturns name="&quot;$$\\vswhere.exe&quot; -version &quot;[16.0,17.0)&quot; -products Microsoft.VisualStudio.Product.Community -property installationPath -format value" />
 					<cmdReturns name="set &quot;vcroot=$$&quot;&amp;for /f &quot;delims= &quot; %a in ('type &quot;$$\VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt&quot;') do @if exist &quot;$$\VC\Tools\MSVC\%a\bin\HostX64\x64\cl.exe&quot; call echo %vcroot%\VC\Tools\MSVC\%a" />
 				</and>
-			</or>	
+			</or>
         </VCINSTALLDIR>
         <VCVARSALLDIR>
             <or>
@@ -209,7 +192,7 @@
 					<fileExists name="$$\VC\Auxiliary\Build\vcvarsall.bat" />
 					<dirExists name="$$"/>
 				</and>
-			</or>	
+			</or>
         </VCVARSALLDIR>
         <KITSROOT>
             <or>
@@ -235,9 +218,9 @@
         </SDKVERSION>
     </locationFinder>
     <env
-        PATH="$VCINSTALLDIR\bin\HostX64\x64\;$VCROOT\Common7\IDE\VC\vcpackages;$VCROOT\Common7\IDE;$VCROOT\Common7\Tools;$SDKROOT\Bin\$SDKVERSION\x64;$SDKROOT\Bin\$SDKVERSION\x86;$SDKROOT\Bin\x64;$SDKROOT\Bin\x86;"
+        PATH="$FORTRANROOT\bin\intel64;$VCINSTALLDIR\bin\HostX64\x64\;$VCROOT\Common7\IDE\VC\vcpackages;$VCROOT\Common7\IDE;$VCROOT\Common7\Tools;$SDKROOT\Bin\$SDKVERSION\x64;$SDKROOT\Bin\$SDKVERSION\x86;$SDKROOT\Bin\x64;$SDKROOT\Bin\x86;"
         INCLUDE="$VCINSTALLDIR\include;$VCINSTALLDIR\atlmfc\include;$KITSROOT\include\$SDKVERSION\ucrt;$KITSROOT\include\$SDKVERSION\shared;$KITSROOT\include\$SDKVERSION\um;$KITSROOT\include\$SDKVERSION\winrt;$MATLABROOT\extern\include"
-        LIB="$VCINSTALLDIR\lib\x64;$VCINSTALLDIR\atlmfc\lib\x64;$KITSROOT\Lib\$SDKVERSION\ucrt\x64;$KITSROOT\lib\$SDKVERSION\um\x64;$MATLABROOT\lib\$ARCH"
-        LIBPATH="$VCINSTALLDIR\lib\x64;$VCINSTALLDIR\atlmfc\lib\x64"
+        LIB="$FORTRANROOT/compiler/lib/intel64_win;$VCINSTALLDIR\lib\x64;$VCINSTALLDIR\atlmfc\lib\x64;$KITSROOT\Lib\$SDKVERSION\ucrt\x64;$KITSROOT\lib\$SDKVERSION\um\x64;$MATLABROOT\lib\$ARCH"
+        LIBPATH="$FORTRANROOT/compiler/lib/intel64_win;$VCINSTALLDIR\lib\x64;$VCINSTALLDIR\atlmfc\lib\x64"
     />
 </config>
