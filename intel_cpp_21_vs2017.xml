@@ -19,7 +19,7 @@
         LinkerLibraries="$LINKLIBS"
         LinkerDebugFlags="$LINKDEBUGFLAGS"
         LinkerOptimizationFlags="$LINKOPTIMFLAGS"
-        CommandLineShell="$CPPROOT\bin\iclvars.bat "
+        CommandLineShell="$CPPROOT\..\env\vars.bat "
         CommandLineShellArg="intel64"
         CompilerDefineFormatter="/D%s"
         LinkerLibrarySwitchFormatter="lib%s.lib;%s.lib"
@@ -32,6 +32,8 @@
         CMDLINE200="$LINKER $LINKFLAGS $LINKTYPE $LINKOPTIM $LINKEXPORTVER $OBJS $LINKLIBS /out:$EXE"
         CMDLINE250="mt -outputresource:$EXE;2 -manifest $MANIFEST"
         CMDLINE300="del $EXP $LIB $MANIFEST $ILK"
+
+        CPPROOT = "$ONE_API_ROOT\compiler\$ONE_API_VERSION\windows"
 
         COMPILER="icl"
         COMPFLAGS="/GR /W3 /EHs /nologo /MD $COMPDEFINES $INCLUDE"
@@ -73,24 +75,15 @@
         />
     </client>
     <locationFinder>
-	    <CPPROOT>
-            <or>
+        <ONE_API_ROOT>
+            <envVarExists name="ONEAPI_ROOT" />
+        </ONE_API_ROOT>
+        <ONE_API_VERSION>
             <and>
-               <or>
-                    <envVarExists name="ONEAPI_ROOT" />
-              </or>
-              <fileExists name="$$/compiler/latest/windows/Bin/intel64/icl.exe" />
-              <dirExists name="$$/../.." />
+                <envVarExists name="ONEAPI_ROOT" />
+                <cmdReturns name ="echo off &amp; (for /f %a IN ('dir &quot;$$\compiler\2021*&quot; /b /ad /on') do (@if exist &quot;$$\compiler\%a\windows\bin\intel64\icl.exe&quot; set &quot;oneapiVer=%a&quot;)) &amp; (@if defined oneapiVer call echo %oneapiVer%)"/>
             </and>
-            <and>
-               <or>
-                    <envVarExists name="ONEAPI_ROOT" />
-              </or>
-              <fileExists name="$$/compiler/2021.1.1/windows/Bin/intel64/icl.exe" />
-              <dirExists name="$$/../.." />
-            </and>
-            </or>
-        </CPPROOT>
+        </ONE_API_VERSION>
         <VCROOT>
             <and>
                 <or>

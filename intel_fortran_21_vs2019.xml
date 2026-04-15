@@ -19,7 +19,7 @@
         LinkerLibraries="$LINKLIBS"
         LinkerDebugFlags="$LINKDEBUGFLAGS"
         LinkerOptimizationFlags="$LINKOPTIMFLAGS"
-        CommandLineShell="$FORTRANROOT\bin\ifortvars.bat "
+        CommandLineShell="$FORTRANROOT\..\env\vars.bat "
         CommandLineShellArg="intel64"
         CompilerDefineFormatter="/D%s"
         LinkerLibrarySwitchFormatter="lib%s.lib;%s.lib"
@@ -73,30 +73,16 @@
         />
     </client>
     <locationFinder>
-	    <FORTRANROOT>
+        <FORTRANROOT>
             <or>
-				<and>
-					<or>
-						<envVarExists name="IFORT_COMPILER21" />
-					</or>
-					<fileExists name="$$/Bin/intel64/ifort.exe" />
-					<dirExists name="$$/../.." />
-				</and>
-				<and>
-					<or>
-						<envVarExists name="ONEAPI_ROOT" />
-					</or>
-					<fileExists name="$$/compiler/latest/windows/Bin/intel64/ifort.exe" />
-					<dirExists name="$$/../.." />
-				</and>
-				<and>
-					<or>
-						<envVarExists name="ONEAPI_ROOT" />
-					</or>
-					<fileExists name="$$/compiler/2021.1.1/windows/Bin/intel64/ifort.exe" />
-					<dirExists name="$$/../.." />
-				</and>
-			</or>
+                <and>
+                    <or>
+                        <envVarExists name="IFORT_COMPILER21" />
+                    </or>
+                    <fileExists name="$$/Bin/intel64/ifort.exe" />
+                    <dirExists name="$$/../.." />
+                </and>
+            </or>
         </FORTRANROOT>
         <VCROOT>
             <or>
@@ -115,8 +101,8 @@
 				<and>
 					<envVarExists name="ProgramFiles(x86)" />
 					<fileExists name="$$\Microsoft Visual Studio\Installer\vswhere.exe" />
-					<cmdReturns name="set &quot;vcroot=$$&quot;&amp;for /f &quot;delims= &quot; %a in ('type &quot;$$\VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt&quot;') do @if exist &quot;$$\VC\Tools\MSVC\%a\bin\HostX64\x64\cl.exe&quot; call echo %vcroot%" />
 					<cmdReturns name="&quot;$$\\vswhere.exe&quot; -version &quot;[16.0,17.0)&quot; -products Microsoft.VisualStudio.Product.Community -property installationPath -format value" />
+					<cmdReturns name="set &quot;vcroot=$$&quot;&amp;for /f &quot;delims= &quot; %a in ('type &quot;$$\VC\Auxiliary\Build\Microsoft.VCToolsVersion.default.txt&quot;') do @if exist &quot;$$\VC\Tools\MSVC\%a\bin\HostX64\x64\cl.exe&quot; call echo %vcroot%" />
 				</and>
 			</or>
         </VCROOT>

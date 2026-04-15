@@ -3,7 +3,7 @@
     Name="MinGW64 Compiler with Windows 10 SDK or later (C++)"
     ShortName = "MinGW64SDK10+"
     Manufacturer="GNU"
-    Version="6.3.0"
+    Version="$MINGW64_VERSION"
     Language="C++"
     Priority="M"
     Location="$MINGWROOT">
@@ -124,6 +124,10 @@
                 <dirExists name="$$\..\" />
             </and>
         </MINGWROOT>
+        <MINGW64_VERSION>
+           <envVarExists name="MW_MINGW64_LOC" />
+           <cmdReturns name="$$\bin\g++ -dumpversion"/>
+        </MINGW64_VERSION>
         <SDKROOT>
             <or>
                 <hklmExists path="SOFTWARE\Wow6432Node\Microsoft\Microsoft SDKs\Windows\v10.0" name="InstallationFolder" />

@@ -19,7 +19,7 @@
         LinkerLibraries="$LINKLIBS"
         LinkerDebugFlags="$LINKDEBUGFLAGS"
         LinkerOptimizationFlags="$LINKOPTIMFLAGS"
-        CommandLineShell="$FORTRANROOT\bin\ifortvars.bat "
+        CommandLineShell="$FORTRANROOT\..\env\vars.bat "
         CommandLineShellArg="intel64"
         CompilerDefineFormatter="/D%s"
         LinkerLibrarySwitchFormatter="lib%s.lib;%s.lib"
@@ -81,21 +81,7 @@
 					</or>
 					<fileExists name="$$/Bin/intel64/ifort.exe" />
 					<dirExists name="$$/../.." />
-				</and>
-				<and>
-					<or>
-						<envVarExists name="ONEAPI_ROOT" />
-					</or>
-					<fileExists name="$$/compiler/latest/windows/Bin/intel64/ifort.exe" />
-					<dirExists name="$$/../.." />
-				</and>
-				<and>
-					<or>
-						<envVarExists name="ONEAPI_ROOT" />
-					</or>
-					<fileExists name="$$/compiler/2021.1.1/windows/Bin/intel64/ifort.exe" />
-					<dirExists name="$$/../.." />
-				</and>
+				</and>				
 			</or>
         </FORTRANROOT>
         <VCROOT>

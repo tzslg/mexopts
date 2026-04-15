@@ -3,7 +3,7 @@
     Name="MinGW64 Compiler (C)"
     ShortName = "mingw64"
     Manufacturer="GNU"
-    Version="6.3.0"
+    Version="$VERSION"
     Language="C"
     Priority="E"
     Location="$MINGWROOT" >
@@ -56,7 +56,7 @@
         SETENV="set COMPILER=$CC
                 set CXXCOMPILER=$MINGWROOT\bin\g++
                 set COMPFLAGS=-c $CFLAGS $DEFINES $MATLABMEX
-                set CXXCOMPFLAGS=-c $CFLAGS -std=c++11 $DEFINES $MATLABMEX
+                set CXXCOMPFLAGS=-c $CFLAGS $DEFINES $MATLABMEX
                 set OPTIMFLAGS=$COPTIMFLAGS
                 set DEBUGFLAGS=$CDEBUGFLAGS
                 set LINKER=$LD
@@ -98,6 +98,10 @@
             </and>
 
         </MINGWROOT>
+        <VERSION>
+           <envVarExists name="MW_MINGW64_LOC" />
+           <cmdReturns name="$$\bin\gcc -dumpversion"/>
+        </VERSION>
     </locationFinder>
     <env
         PATH = "$MINGWROOT\bin;$MATLABROOT\extern\include\$ARCH;$MATLABROOT\extern\include;$MATLABROOT\simulink\include;$MATLABROOT\lib\$ARCH"

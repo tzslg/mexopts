@@ -3,7 +3,7 @@
     Name="MinGW64 Compiler (C++)"
     ShortName = "mingw64-g++"
     Manufacturer="GNU"
-    Version="6.3.0"
+    Version="$VERSION"
     Language="C++"
     Priority="E"
     Location="$MINGWROOT" >
@@ -35,7 +35,7 @@
         DEFINES="-m64 $MATLABMEX"
         MATLABMEX="-DMATLAB_MEX_FILE "
         CFLAGS="-fexceptions -fno-omit-frame-pointer"
-        CXXFLAGS="$CFLAGS -std=c++11"
+        CXXFLAGS="$CFLAGS"
         INCLUDE="-I&quot;$MATLABROOT/extern/include&quot; -I&quot;$MATLABROOT/simulink/include&quot;"
         CXXOPTIMFLAGS="-O2 -fwrapv -DNDEBUG"
         CXXDEBUGFLAGS="-g"
